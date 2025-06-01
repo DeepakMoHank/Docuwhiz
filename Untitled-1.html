@@ -1,0 +1,104 @@
+<!-- DocuWhiz AI Frontend (Scribbler Compatible with ENTER buttons) -->
+<html>
+  <head>
+    <title>DocuWhiz AI</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
+        text-align: center;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+      }
+      h1 {
+        color: #4a90e2;
+      }
+      input, button, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background-color: #4a90e2;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #357ab7;
+      }
+      #responseBox {
+        text-align: left;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>DocuWhiz AI</h1>
+
+      <label>Select a document (PDF/DOCX/Excel):</label>
+      <input type="file" id="docInput" />
+      <button onclick="handleDocumentUpload()">📄 Enter (Summarize Document)</button>
+
+      <h2>Ask a Question</h2>
+      <textarea id="userQuestion" placeholder="Type your question here..."></textarea>
+      <button onclick="handleQuestion()">💬 Enter (Ask)</button>
+      <button onclick="startVoiceInput()">🎤 Voice Input</button>
+
+      <div id="responseBox"></div>
+    </div>
+
+    <script>
+      let summaryData = "";
+
+      async function handleDocumentUpload() {
+        const fileInput = document.getElementById("docInput");
+        const file = fileInput.files[0];
+        if (!file) return alert("Please select a document.");
+
+        // Simulated summary (replace with actual logic)
+        summaryData = "This is a sample summary of the document contents...";
+
+        document.getElementById("responseBox").innerHTML =
+          "<strong>Document summarized and stored.</strong>";
+      }
+
+      async function handleQuestion() {
+        const question = document.getElementById("userQuestion").value;
+        if (!question) return alert("Please enter your question.");
+
+        // Simulate API call
+        const combinedPrompt = `${summaryData}\nQuestion: ${question}`;
+        const response = await fakeOpenAiApi(combinedPrompt);
+
+        document.getElementById("responseBox").innerHTML =
+          `<strong>Answer:</strong><br>${response}`;
+      }
+
+      function startVoiceInput() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.start();
+
+        recognition.onresult = function (event) {
+          const voiceText = event.results[0][0].transcript;
+          document.getElementById("userQuestion").value = voiceText;
+        };
+      }
+
+      // Simulated LLM API (replace with real OpenAI/Gemini call)
+      async function fakeOpenAiApi(prompt) {
+        return `Simulated response based on: ${prompt}`;
+      }
+    </script>
+  </body>
+</html>
